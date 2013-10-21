@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-default["sshkey"]["users"].each do |user|
+node["sshkey"]["users"].each do |user|
   sshkey user["username"] do
     home user["home"]
     keys user["keys"]

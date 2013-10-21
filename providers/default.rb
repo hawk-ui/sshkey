@@ -24,13 +24,13 @@ action :create do
   directory "#{home_directory}/.ssh" do
     mode 0700
     owner new_resource.username
-    group new_resource.username
+    group new_resource.group || new_resource.username
   end
 
   template "#{home_directory}/.ssh/authorized_keys" do
     mode 0600
     owner new_resource.username
-    group new_resource.username
+    group new_resource.group || new_resource.username
 
     cookbook "sshkey"
     source "authorized_keys.conf.erb"
