@@ -66,6 +66,32 @@ action :create do
     end
   end
 
+  if new_resource.public_key =~ /^http/
+    remote_file "#{home_directory}/.ssh/id_rsa.pub" do
+      mode 0600
+      owner new_resource.username
+      group new_resource.group || new_resource.username
+
+      source new_resource.public_key
+
+      not_if do
+        new_resource.public_key.nil?
+      end
+    end
+  else
+    template "#{home_directory}/.ssh/id_rsa.pub" do
+      mode 0600
+      owner new_resource.username
+      group new_resource.group || new_resource.username
+
+      content new_resource.public_key
+
+      not_if do
+        new_resource.public_key.nil?
+      end
+    end
+  end
+
   new_resource.updated_by_last_action(true)
 end
 

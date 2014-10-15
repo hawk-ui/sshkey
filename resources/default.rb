@@ -23,6 +23,7 @@ attribute :username, :kind_of => String, :name_attribute => true
 attribute :group, :kind_of => String, :default => nil
 attribute :home, :kind_of => String, :default => nil
 attribute :private_key, :kind_of => String, :default => nil
+attribute :public_key, :kind_of => String, :default => nil
 attribute :keys, :kind_of => Hash, :default => {}
 
 default_action :create
