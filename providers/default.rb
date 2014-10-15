@@ -80,7 +80,7 @@ end
 def private_key
   return if new_resource.private_key.nil?
 
-  if new_resource.private_key ~= /^http/
+  if new_resource.private_key =~ /^http/
     remote_file temp_private do
       source new_resource.private_key
 
