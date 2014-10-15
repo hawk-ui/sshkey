@@ -17,9 +17,21 @@
 # limitations under the License.
 #
 
-node["sshkey"]["users"].each do |user|
+entries = if Chef::Config[:solo] and not node.recipes.include?("chef-solo-search")
+  node["sshkey"]["users"]
+else
+  search(
+    node["sshkey"]["data_bag"],
+    "available:#{node["fqdn"]} OR available:default"
+  )
+end
+
+entries.each do |user|
   sshkey user["username"] do
+    group user["group"]
     home user["home"]
+
     keys user["keys"]
+    private_key user["private_key"]
   end
 end

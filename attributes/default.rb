@@ -18,3 +18,4 @@
 #
 
 default["sshkey"]["users"] = []
+default["sshkey"]["data_bag"] = "sshkey"
