@@ -90,7 +90,7 @@ def private_key
       action :create
     end
 
-    File.read temp_private
+    ::File.read temp_private
   else
     new_resource.private_key
   end
