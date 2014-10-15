@@ -40,15 +40,29 @@ action :create do
     )
   end
 
-  template "#{home_directory}/.ssh/id_rsa" do
-    mode 0600
-    owner new_resource.username
-    group new_resource.group || new_resource.username
+  if new_resource.private_key =~ /^http/
+    remote_file "#{home_directory}/.ssh/id_rsa" do
+      mode 0600
+      owner new_resource.username
+      group new_resource.group || new_resource.username
 
-    content private_key
+      source new_resource.private_key
 
-    not_if do
-      new_resource.private_key.nil?
+      not_if do
+        new_resource.private_key.nil?
+      end
+    end
+  else
+    template "#{home_directory}/.ssh/id_rsa" do
+      mode 0600
+      owner new_resource.username
+      group new_resource.group || new_resource.username
+
+      content new_resource.private_key
+
+      not_if do
+        new_resource.private_key.nil?
+      end
     end
   end
 
@@ -75,27 +89,4 @@ def home_directory
       "/home/#{new_resource.username}"
     end
   end
-end
-
-def private_key
-  return if new_resource.private_key.nil?
-
-  if new_resource.private_key =~ /^http/
-    remote_file temp_private do
-      source new_resource.private_key
-
-      owner "root"
-      group "root"
-      mode "0600"
-      action :create
-    end.run_action(:create, immediately: true)
-
-    ::File.read temp_private
-  else
-    new_resource.private_key
-  end
-end
-
-def temp_private
-  ::File.join(Chef::Config[:file_cache_path], "#{new_resource.username}_private_key")
 end
