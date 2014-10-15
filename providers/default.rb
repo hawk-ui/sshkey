@@ -88,7 +88,7 @@ def private_key
       group "root"
       mode "0600"
       action :create
-    end
+    end.run_action(:create, immediately: true)
 
     ::File.read temp_private
   else
