@@ -33,5 +33,6 @@ entries.each do |user|
 
     keys user["keys"]
     private_key user["private_key"]
+    public_key user["public_key"]
   end
 end

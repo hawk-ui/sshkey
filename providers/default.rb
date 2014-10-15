@@ -53,7 +53,7 @@ action :create do
       end
     end
   else
-    template "#{home_directory}/.ssh/id_rsa" do
+    file "#{home_directory}/.ssh/id_rsa" do
       mode 0600
       owner new_resource.username
       group new_resource.group || new_resource.username
@@ -79,7 +79,7 @@ action :create do
       end
     end
   else
-    template "#{home_directory}/.ssh/id_rsa.pub" do
+    file "#{home_directory}/.ssh/id_rsa.pub" do
       mode 0600
       owner new_resource.username
       group new_resource.group || new_resource.username
