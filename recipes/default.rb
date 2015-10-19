@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-entries = if Chef::Config[:solo] and not node.recipes.include?("chef-solo-search")
+entries = if Chef::Config[:solo] and not (node.recipes.include?("chef-solo-search") || node.recipes.include?("chef-solo-search::default"))
   node["sshkey"]["users"]
 else
   search(
